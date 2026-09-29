@@ -1,0 +1,486 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Giloo Creator Tools</title>
+<meta name="description" content="字幕、試片頁、Press Kit、發行計畫、社群短片。用一句話說出你要什麼，拿回一份可以直接寄出去的東西。">
+<meta property="og:title" content="Giloo Creator Tools">
+<meta property="og:description" content="片子拍完了，難的才剛開始。五個工具，一個對話介面。">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist+Mono:wght@400;500&family=Geist:wght@400;500;600;700&family=Noto+Sans+TC:wght@400;500;700&display=swap">
+<style>
+:root{
+  --red:#EA2B40; --red-d:#C82034; --red-l:#FF5568; --red-tint:#FEF0F2;
+  --ink:#16181C; --ink-2:#4B5158; --ink-3:#8A9098;
+  --bg:#FFFFFF; --bg-2:#FAFAF9; --bg-3:#F3F3F1;
+  --line:#E6E6E3; --line-2:#EFEFEC;
+  --sans:"Geist","Noto Sans TC",-apple-system,"PingFang TC","Helvetica Neue",sans-serif;
+  --mono:"Geist Mono",ui-monospace,Menlo,monospace;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--sans);font-size:16px;line-height:1.7;-webkit-font-smoothing:antialiased}
+img{max-width:100%;display:block}
+#p[data-lang="en"] .zh,#p[data-lang="zh"] .en{display:none}
+#p[data-lang="en"] .h-zh,#p[data-lang="zh"] .h-en{display:none}
+.wrap{max-width:1140px;margin:0 auto;padding-inline:clamp(20px,4vw,36px)}
+.eyebrow{margin:0;font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--red)}
+h2{margin:12px 0 0;font-size:clamp(26px,3.6vw,40px);line-height:1.22;font-weight:600;letter-spacing:-.022em;text-wrap:balance}
+h3{margin:0;font-weight:600}
+p{margin:0}
+.lede{color:var(--ink-2);font-size:16.5px;line-height:1.8;max-width:54ch}
+section{padding-block:clamp(56px,7.5vw,96px)}
+.tint{background:var(--bg-2)}
+.center{text-align:center}
+.center h2,.center .lede{margin-inline:auto}
+.center .lede{max-width:52ch}
+
+/* header */
+header{position:sticky;top:0;z-index:60;background:rgba(255,255,255,.88);backdrop-filter:blur(14px);border-bottom:1px solid var(--line-2)}
+header .wrap{display:flex;align-items:center;gap:10px;height:62px}
+.logo{display:flex;align-items:center;gap:9px;font-weight:600;font-size:15px;white-space:nowrap;color:var(--ink);text-decoration:none}
+.logo i{width:24px;height:24px;border-radius:7px;background:linear-gradient(135deg,var(--red),#FF7A6B);display:block}
+nav.main{display:flex;gap:2px;margin-left:24px}
+nav.main a{color:var(--ink-2);text-decoration:none;font-size:14.5px;padding:7px 11px;border-radius:7px}
+nav.main a:hover{color:var(--ink);background:var(--bg-3)}
+.hdr-r{margin-left:auto;display:flex;align-items:center;gap:10px}
+.langs{display:flex;gap:2px;border:1px solid var(--line);border-radius:999px;padding:2px}
+.langs button{font-family:var(--mono);font-size:11px;letter-spacing:.06em;padding:4px 10px;border-radius:999px;border:0;background:transparent;color:var(--ink-3);cursor:pointer}
+.langs button[aria-pressed="true"]{background:var(--ink);color:#fff}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;height:46px;padding:0 24px;border-radius:999px;border:1px solid var(--line);background:#fff;color:var(--ink);font-family:inherit;font-size:15px;font-weight:500;text-decoration:none;cursor:pointer;white-space:nowrap;transition:.15s}
+.btn:hover{border-color:var(--ink-3)}
+.btn.red{background:var(--red);border-color:var(--red);color:#fff;font-weight:600;box-shadow:0 6px 20px -8px rgba(234,43,64,.6)}
+.btn.red:hover{background:var(--red-d);border-color:var(--red-d)}
+.btn.sm{height:38px;padding:0 17px;font-size:14px}
+.btn.ghost{background:rgba(255,255,255,.14);border-color:rgba(255,255,255,.4);color:#fff}
+.btn.ghost:hover{background:rgba(255,255,255,.24);border-color:#fff}
+
+/* hero */
+.hero{padding-block:0 clamp(40px,6vw,72px)}
+.banner{position:relative;border-radius:22px;overflow:hidden;margin-top:22px;isolation:isolate;padding:clamp(52px,8vw,96px) clamp(24px,5vw,64px);text-align:center;color:#fff;background:#E5304A}
+.banner::before,.banner::after{content:"";position:absolute;inset:-25%;z-index:-1}
+.banner::before{background:
+  radial-gradient(48% 62% at 14% 24%,#FF8A5B 0%,transparent 62%),
+  radial-gradient(52% 58% at 78% 16%,#FF3D6E 0%,transparent 64%),
+  radial-gradient(62% 72% at 58% 92%,#4B6CF7 0%,transparent 60%),
+  radial-gradient(46% 56% at 92% 74%,#22C8E0 0%,transparent 58%),
+  radial-gradient(56% 64% at 30% 78%,#9B4BF7 0%,transparent 62%);
+  filter:blur(6px)}
+.banner::after{background:linear-gradient(180deg,rgba(18,10,12,.12) 0%,rgba(18,10,12,.34) 100%)}
+.banner .eyebrow{color:rgba(255,255,255,.82)}
+.banner h1{margin:16px auto 0;font-size:clamp(32px,5.6vw,58px);line-height:1.1;font-weight:600;letter-spacing:-.03em;text-wrap:balance;max-width:17ch;text-shadow:0 2px 24px rgba(0,0,0,.22)}
+.banner .sub{margin:18px auto 0;font-size:clamp(15.5px,1.8vw,18.5px);line-height:1.75;max-width:44ch;color:rgba(255,255,255,.92)}
+.banner .cta{margin-top:30px;display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
+.banner .note{margin-top:16px;font-size:13px;color:rgba(255,255,255,.72)}
+
+/* pills row */
+.trio{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:40px}
+.tri{display:flex;align-items:center;gap:14px}
+.tri .ic{width:44px;height:44px;border-radius:12px;background:var(--red);color:#fff;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.tri b{font-size:16px;font-weight:600;line-height:1.45;display:block}
+.tri span{font-size:13.5px;color:var(--ink-2)}
+
+/* numbers */
+.nums{display:grid;grid-template-columns:repeat(4,1fr);gap:28px 20px;margin-top:40px}
+.num .v{font-size:clamp(34px,4.6vw,50px);font-weight:600;letter-spacing:-.035em;line-height:1;padding-bottom:12px;border-bottom:3px solid var(--red);display:inline-block}
+.num .k{margin-top:12px;font-size:14px;color:var(--ink-2);line-height:1.55}
+
+/* tools */
+.tools{margin-top:40px;display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+.tool{border:1px solid var(--line);border-radius:16px;overflow:hidden;background:#fff;display:flex;flex-direction:column;transition:.18s}
+.tool:hover{border-color:var(--ink-3);transform:translateY(-2px);box-shadow:0 18px 40px -26px rgba(0,0,0,.4)}
+.tool.soon{background:var(--bg-2)}
+.tool .pic{aspect-ratio:16/10;background:#17191D;border-bottom:1px solid var(--line);overflow:hidden;position:relative}
+.tool .pic img{width:100%;height:100%;object-fit:cover;object-position:top left}
+.tool .bd{padding:20px 22px 22px;display:flex;flex-direction:column;gap:9px;flex-grow:1}
+.tool .tp{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.tool h3{font-size:18.5px}
+.tag{font-family:var(--mono);font-size:10px;letter-spacing:.08em;padding:3px 8px;border-radius:5px;background:var(--red-tint);color:var(--red-d);text-transform:uppercase;font-weight:500}
+.tag.grey{background:var(--bg-3);color:var(--ink-3)}
+.tool p{color:var(--ink-2);font-size:14.5px;line-height:1.72}
+.tool .out{margin-top:auto;padding-top:13px;border-top:1px solid var(--line-2);font-size:13.5px;color:var(--ink-3);display:flex;gap:8px}
+.tool .out b{color:var(--ink-2);font-weight:500;flex-shrink:0}
+.mock{position:absolute;inset:0;display:flex;flex-direction:column;gap:9px;justify-content:center;padding:26px;font-family:var(--mono)}
+.mock .pill{border:1px solid #333942;border-radius:6px;padding:4px 9px;font-size:10.5px;color:#A9AEB6;display:inline-flex;align-items:center;gap:5px}
+.mock .pill.on{border-color:var(--red);color:#FF8A96;background:#2A1215}
+.mock .row{display:flex;gap:7px;flex-wrap:wrap;align-items:center}
+.mock .b{height:9px;border-radius:5px;background:#333942;display:block}
+.mock .b.r{background:var(--red);opacity:.8}
+
+/* checks */
+.checks{margin-top:36px;display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--line);border:1px solid var(--line);border-radius:16px;overflow:hidden}
+.chk{background:#fff;padding:20px 22px;display:grid;grid-template-columns:auto 1fr;gap:4px 14px}
+.chk i{grid-row:span 2;width:22px;height:22px;border-radius:11px;background:var(--red-tint);color:var(--red);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;font-style:normal;margin-top:3px}
+.chk b{font-size:15.5px;font-weight:600;line-height:1.5}
+.chk span{font-size:14px;color:var(--ink-2);line-height:1.6}
+.chk-foot{margin-top:18px;border:1px solid var(--red);border-radius:12px;padding:17px 22px;background:var(--red-tint);font-weight:600;font-size:16.5px}
+
+/* steps */
+.steps{margin-top:38px;display:grid;grid-template-columns:repeat(4,1fr);gap:22px}
+.step{display:flex;flex-direction:column;gap:9px;padding-top:18px;border-top:2px solid var(--red)}
+.step .n{font-family:var(--mono);font-size:24px;font-weight:500;color:var(--red);letter-spacing:-.02em;line-height:1}
+.step b{font-size:16.5px;font-weight:600}
+.step span{font-size:14px;color:var(--ink-2);line-height:1.7}
+
+/* quotes */
+.quotes{margin-top:38px;display:grid;grid-template-columns:1fr 1fr;gap:18px}
+.quote{border:1px solid var(--line);border-radius:16px;padding:26px 24px;display:flex;flex-direction:column;gap:14px;background:#fff}
+.quote .m{font-family:var(--mono);font-size:30px;line-height:.55;color:var(--red);height:15px}
+.quote p{font-size:15.5px;line-height:1.85}
+.quote cite{font-style:normal;font-size:13px;color:var(--ink-3);font-family:var(--mono);letter-spacing:.04em}
+
+/* faq */
+.faq{margin-top:32px;border-top:1px solid var(--line)}
+.faq details{border-bottom:1px solid var(--line)}
+.faq summary{cursor:pointer;list-style:none;padding:20px 44px 20px 0;font-size:17px;font-weight:600;position:relative}
+.faq summary::-webkit-details-marker{display:none}
+.faq summary::after{content:"";position:absolute;right:10px;top:50%;width:9px;height:9px;border-right:2px solid var(--ink-3);border-bottom:2px solid var(--ink-3);transform:translateY(-70%) rotate(45deg);transition:transform .18s}
+.faq details[open] summary::after{transform:translateY(-20%) rotate(-135deg)}
+.faq .a{padding:0 0 22px;color:var(--ink-2);font-size:15.5px;line-height:1.85;max-width:66ch}
+
+/* signup */
+.signup{background:linear-gradient(160deg,#FEF0F2 0%,#F4F1FB 52%,#EDF7FA 100%);border-top:1px solid var(--line-2)}
+.form{margin-top:30px;display:grid;grid-template-columns:1fr 1fr;gap:14px;max-width:640px}
+.field{display:flex;flex-direction:column;gap:6px}
+.field.full{grid-column:1/-1}
+.field label{font-family:var(--mono);font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-3)}
+.field input,.field select{height:48px;padding:0 14px;border-radius:10px;border:1px solid var(--line);background:#fff;color:var(--ink);font-family:inherit;font-size:15.5px}
+.field input::placeholder{color:#A9AEB2}
+.field input:focus,.field select:focus{outline:2px solid var(--red);outline-offset:1px;border-color:transparent}
+.form-foot{grid-column:1/-1;display:flex;align-items:center;gap:14px;flex-wrap:wrap;margin-top:4px}
+.form-foot small{font-size:12.5px;color:var(--ink-3);max-width:34ch;line-height:1.5}
+.done{margin-top:30px;border:1px solid var(--red);border-radius:14px;padding:24px;max-width:600px;background:#fff}
+.done b{display:block;font-size:19px;margin-bottom:6px}
+.done span{color:var(--ink-2);font-size:15px;line-height:1.7}
+footer{background:var(--bg-3);border-top:1px solid var(--line);padding-block:30px 40px;font-size:13.5px;color:var(--ink-3)}
+footer .wrap{display:flex;gap:12px 28px;flex-wrap:wrap;align-items:center}
+footer a{color:var(--ink-2);text-decoration:none}
+footer a:hover{color:var(--ink)}
+.hide{display:none!important}
+@media (max-width:980px){
+  .tools{grid-template-columns:1fr 1fr}
+  .trio,.steps{grid-template-columns:1fr 1fr}
+  nav.main{display:none}
+}
+@media (max-width:640px){
+  .nums{grid-template-columns:1fr 1fr}
+  .tools,.checks,.trio,.steps,.quotes,.form{grid-template-columns:1fr}
+  .banner{border-radius:16px}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto}}
+</style>
+</head>
+<body>
+<div id="p" data-lang="en">
+
+<header><div class="wrap">
+  <a class="logo" href="#top"><i></i>Giloo Creator Tools</a>
+  <nav class="main">
+    <a href="#tools"><span class="en">Tools</span><span class="zh">五個工具</span></a>
+    <a href="#why"><span class="en">Why</span><span class="zh">為什麼</span></a>
+    <a href="#how"><span class="en">How it works</span><span class="zh">怎麼用</span></a>
+    <a href="#faq">FAQ</a>
+  </nav>
+  <div class="hdr-r">
+    <div class="langs" role="group" aria-label="Language">
+      <button type="button" data-set="en" aria-pressed="true">EN</button>
+      <button type="button" data-set="zh" aria-pressed="false">中文</button>
+    </div>
+    <a class="btn red sm" href="#signup"><span class="en">Get early access</span><span class="zh">加入名單</span></a>
+  </div>
+</div></header>
+
+<!-- HERO -->
+<section class="hero" id="top"><div class="wrap">
+  <div class="banner">
+    <p class="eyebrow">Giloo Creator Tools · Busan 2026</p>
+    <h1 class="h-en">Your film is finished. The hard part starts now.</h1>
+    <h1 class="h-zh">片子拍完了，難的才剛開始。</h1>
+    <p class="sub en">Subtitles, a secure screener, a press kit, a release plan, social cuts. Say what you need in one sentence and get back something you can actually send.</p>
+    <p class="sub zh">字幕、安全的試片頁、Press Kit、發行計畫、社群短片。用一句話說出你要什麼，拿回一份可以直接寄出去的東西。</p>
+    <div class="cta">
+      <a class="btn red" href="#signup"><span class="en">Get early access</span><span class="zh">加入第一批名單</span></a>
+      <a class="btn ghost" href="#tools"><span class="en">See the five tools</span><span class="zh">先看五個工具</span></a>
+    </div>
+    <p class="note en">Free while it is in prototype. Built by a team that has been releasing films for seven years.</p>
+    <p class="note zh">原型階段免費。做這個工具的團隊，發行電影七年了。</p>
+  </div>
+
+  <div class="trio">
+    <div class="tri">
+      <span class="ic"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg></span>
+      <span><b class="en">Hours back</b><b class="zh">拿回時間</b><span class="en">The unpaid week, done in an afternoon</span><span class="zh">那沒人付錢的一週，一個下午做完</span></span>
+    </div>
+    <div class="tri">
+      <span class="ic"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="10" width="16" height="11" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg></span>
+      <span><b class="en">Film stays safe</b><b class="zh">片子不外流</b><span class="en">Watermark, password, view limit, watch log</span><span class="zh">浮水印、密碼、限次觀看、觀看紀錄</span></span>
+    </div>
+    <div class="tri">
+      <span class="ic"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 20V9M10 20V4M17 20v-7"/><path d="M2 20h20"/></svg></span>
+      <span><b class="en">It adds up</b><b class="zh">會累積</b><span class="en">Partners and audience carry to the next film</span><span class="zh">夥伴和觀眾帶到下一部片</span></span>
+    </div>
+  </div>
+
+  <div class="nums">
+    <div class="num"><div class="v">5</div><div class="k en">tools, one conversation</div><div class="k zh">個工具，一個對話介面</div></div>
+    <div class="num"><div class="v">52</div><div class="k en">ways to start, all in your own words</div><div class="k zh">個入口，全是你會講的話</div></div>
+    <div class="num"><div class="v">190</div><div class="k en">festivals in the database, human-checked</div><div class="k zh">個影展資料，人工查證過</div></div>
+    <div class="num"><div class="v">4</div><div class="k en">subtitle languages out of the box</div><div class="k zh">種字幕語言，中英日韓</div></div>
+  </div>
+</div></section>
+
+<!-- TOOLS -->
+<section class="tint" id="tools"><div class="wrap">
+  <p class="eyebrow">The five tools</p>
+  <h2 class="h-en">You never pick a tool. You say the sentence and it picks.</h2>
+  <h2 class="h-zh">你不用挑工具。你講一句話，它自己挑。</h2>
+  <p class="lede en" style="margin-top:14px">Most jobs pull two or three of these and hand back one finished thing. Here is everything that is in there.</p>
+  <p class="lede zh" style="margin-top:14px">大部分的活會用到其中兩三個，最後交給你一份做完的東西。以下是全部。</p>
+
+  <div class="tools">
+    <div class="tool">
+      <div class="pic"><img src="shots/poc-result.png" alt="Subtitle files with a line by line proofing table" width="1440" height="900" loading="lazy"></div>
+      <div class="bd">
+        <div class="tp"><h3 class="h-en">Subtitles</h3><h3 class="h-zh">字幕翻譯</h3><span class="tag">Live</span></div>
+        <p class="en">Transcribe from the audio, translate, set the timing, apply your glossary, and flag the lines a native speaker should read before you send it.</p>
+        <p class="zh">從聲音聽打、翻譯、上時間軸、套用你的名詞表，並標出送出前該找母語者看的句子。</p>
+        <div class="out"><b class="en">You get</b><b class="zh">你會拿到</b><span class="en">.srt files plus a proofing report</span><span class="zh">字幕檔加一份校對報告</span></div>
+      </div>
+    </div>
+
+    <div class="tool">
+      <div class="pic"><div class="mock">
+        <div class="row"><span class="pill on">🔒 password</span><span class="pill">watermark</span><span class="pill">1 view</span></div>
+        <span class="b" style="width:66%"></span><span class="b" style="width:44%"></span>
+        <span class="b r" style="width:30%;margin-top:6px"></span>
+      </div></div>
+      <div class="bd">
+        <div class="tp"><h3 class="h-en">Film site &amp; press kit</h3><h3 class="h-zh">官網與 Press Kit</h3><span class="tag">Live</span></div>
+        <p class="en">A one-film site you can send to anyone, a private screener behind a password and a watermark, and a kit a programmer can download.</p>
+        <p class="zh">一個可以寄給任何人的單片網站、一個有密碼和浮水印的私人試片頁，還有策展人可以下載的 Press Kit。</p>
+        <div class="out"><b class="en">You get</b><b class="zh">你會拿到</b><span class="en">A live URL, a password, and a watch log</span><span class="zh">一個網址、一組密碼、一份觀看紀錄</span></div>
+      </div>
+    </div>
+
+    <div class="tool">
+      <div class="pic"><div class="mock">
+        <div class="row"><span class="pill on">01 Japan</span><span class="pill">02 North America</span></div>
+        <span class="b r" style="width:80%"></span><span class="b" style="width:54%"></span><span class="b" style="width:36%"></span>
+      </div></div>
+      <div class="bd">
+        <div class="tp"><h3 class="h-en">Release plan</h3><h3 class="h-zh">行銷策略報告</h3><span class="tag">Live</span></div>
+        <p class="en">Which markets first and why, films like yours and how they travelled, the festivals and buyers worth a first email, and what to do next week.</p>
+        <p class="zh">先做哪個市場、為什麼，跟你相似的片怎麼走出去，值得寄第一封信的影展和買家，還有下週該做什麼。</p>
+        <div class="out"><b class="en">You get</b><b class="zh">你會拿到</b><span class="en">A report with names, deadlines and fees</span><span class="zh">一份有名字、截止日和費用的報告</span></div>
+      </div>
+    </div>
+
+    <div class="tool">
+      <div class="pic"><div class="mock" style="flex-direction:row;gap:10px;align-items:stretch;padding:22px">
+        <span style="flex:1;border:1px solid #333942;border-radius:7px;background:#20242A"></span>
+        <span style="flex:1;border:1px solid var(--red);border-radius:7px;background:#2A1215"></span>
+        <span style="flex:1;border:1px solid #333942;border-radius:7px;background:#20242A"></span>
+      </div></div>
+      <div class="bd">
+        <div class="tp"><h3 class="h-en">Social desk</h3><h3 class="h-zh">社群後台</h3><span class="tag">Live</span></div>
+        <p class="en">It watches the film, finds the three moments that actually land, cuts them vertical, writes the captions in two languages, and lays out a schedule you approve.</p>
+        <p class="zh">它會看片，找出三個真的打中人的片刻，剪成直式，寫中英文案，排好一份你按核准就能發的時程。</p>
+        <div class="out"><b class="en">You get</b><b class="zh">你會拿到</b><span class="en">Cuts, captions, and a posting schedule</span><span class="zh">片段、文案、發文排程</span></div>
+      </div>
+    </div>
+
+    <div class="tool soon">
+      <div class="pic"><div class="mock">
+        <div class="row" style="align-items:flex-end;gap:7px;height:58px">
+          <span class="b" style="width:15px;height:26px"></span><span class="b" style="width:15px;height:40px"></span>
+          <span class="b r" style="width:15px;height:58px"></span><span class="b" style="width:15px;height:32px"></span>
+          <span class="b" style="width:15px;height:19px"></span>
+        </div>
+        <span class="pill" style="align-self:flex-start">+38% · 90 days</span>
+      </div></div>
+      <div class="bd">
+        <div class="tp"><h3 class="h-en">Listening</h3><h3 class="h-zh">輿情分析</h3><span class="tag grey"><span class="en">Updating</span><span class="zh">更新中</span></span></div>
+        <p class="en">Who is already talking about your subject, on which platform, in which language, and which of those groups would actually show up for a screening. We are rebuilding this one and it will open to early users first.</p>
+        <p class="zh">誰已經在談你的題目、在哪個平台、用什麼語言，以及哪一群人真的會來看放映。這個正在重做，會先開放給第一批使用者。</p>
+        <div class="out"><b class="en">Coming</b><b class="zh">即將提供</b><span class="en">Where the audience already is</span><span class="zh">觀眾現在在哪裡</span></div>
+      </div>
+    </div>
+
+    <div class="tool">
+      <div class="pic"><img src="shots/poc-assets.png" alt="Asset library holding the film, trailer, subtitles and stills" width="1440" height="900" loading="lazy"></div>
+      <div class="bd">
+        <div class="tp"><h3 class="h-en">One place for the film itself</h3><h3 class="h-zh">片子本身放在一個地方</h3><span class="tag">Live</span></div>
+        <p class="en">Upload the cut, the trailer, subtitles and stills once. Every tool reads from the same shelf, so you never send the same file twice.</p>
+        <p class="zh">正片、預告、字幕、劇照上傳一次。每個工具都從同一個架子上拿，同一個檔案不用傳第二次。</p>
+        <div class="out"><b class="en">Included</b><b class="zh">內建</b><span class="en">Your own space, nobody else sees it</span><span class="zh">你自己的空間，別人看不到</span></div>
+      </div>
+    </div>
+  </div>
+</div></section>
+
+<!-- WHY -->
+<section id="why"><div class="wrap center">
+  <p class="eyebrow">Maybe this is already your week</p>
+  <h2 class="h-en">Any of this sound like the last month?</h2>
+  <h2 class="h-zh">這幾件事，你上個月是不是都做過？</h2>
+</div><div class="wrap">
+  <div class="checks">
+    <div class="chk"><i>✓</i><b class="en">You paid for subtitles and still fixed the names yourself</b><b class="zh">花錢做了字幕，人名還是自己一句句改</b><span class="en">And the file came back in the wrong format for the festival.</span><span class="zh">而且交回來的格式還不是影展要的。</span></div>
+    <div class="chk"><i>✓</i><b class="en">A programmer asked for a link and you hesitated</b><b class="zh">策展人跟你要連結，你猶豫了一下</b><span class="en">Unlisted YouTube is not a screener. You know it, they know it.</span><span class="zh">不公開的 YouTube 不算試片連結，你知道，對方也知道。</span></div>
+    <div class="chk"><i>✓</i><b class="en">You opened a blank doc to write the synopsis in English</b><b class="zh">開了空白檔案，要寫英文的 synopsis</b><span class="en">Then closed it. Three times.</span><span class="zh">然後關掉。關了三次。</span></div>
+    <div class="chk"><i>✓</i><b class="en">You got in, and had three days to post something</b><b class="zh">入選了，三天內要發社群</b><span class="en">With one trailer and no one to cut it.</span><span class="zh">手上只有一支預告，沒人幫你剪。</span></div>
+    <div class="chk"><i>✓</i><b class="en">You picked festivals from a forum thread</b><b class="zh">投影展的名單，是從論壇文章抄來的</b><span class="en">Entry fees are real money and you were guessing.</span><span class="zh">報名費是真的錢，而你其實是在猜。</span></div>
+    <div class="chk"><i>✓</i><b class="en">The run ended and the film went quiet</b><b class="zh">影展跑完了，片子就安靜了</b><span class="en">You still hold the rights and nothing is happening.</span><span class="zh">權利還在你手上，但什麼都沒發生。</span></div>
+  </div>
+  <div class="chk-foot center"><span class="en">Two or more? That is exactly who we built this for.</span><span class="zh">中了兩項以上？那你就是我們做這個工具想幫的人。</span></div>
+</div></section>
+
+<!-- HOW -->
+<section class="tint" id="how"><div class="wrap">
+  <p class="eyebrow">How it works</p>
+  <h2 class="h-en">Four steps. You keep every decision that matters.</h2>
+  <h2 class="h-zh">四個步驟。重要的決定都還在你手上。</h2>
+  <div class="steps">
+    <div class="step"><span class="n">01</span><b class="en">Upload the film</b><b class="zh">上傳影片</b><span class="en">The cut, the trailer, subtitles, stills. It goes into your own space and nobody else sees it.</span><span class="zh">正片、預告、字幕、劇照。放進你自己的空間，別人看不到。</span></div>
+    <div class="step"><span class="n">02</span><b class="en">Say what you need</b><b class="zh">說出你要什麼</b><span class="en">One sentence, in your words. Or pick the one closest to your situation.</span><span class="zh">一句話，用你自己的講法。或挑一個最接近的情況。</span></div>
+    <div class="step"><span class="n">03</span><b class="en">Check before it runs</b><b class="zh">開始前先確認</b><span class="en">It shows what it will do and what it costs. Nothing starts until you press start.</span><span class="zh">它會先說要做什麼、花多少。你按開始才會動。</span></div>
+    <div class="step"><span class="n">04</span><b class="en">Approve, or ask for changes</b><b class="zh">核准，或叫它改</b><span class="en">Changes are free. When it is right, it is saved to the film and ready to send.</span><span class="zh">修改不另外收費。改好之後存回這部片，可以直接寄出去。</span></div>
+  </div>
+</div></section>
+
+<!-- QUOTES -->
+<section><div class="wrap">
+  <p class="eyebrow">What we heard</p>
+  <h2 class="h-en">We asked before we built. This is what came back.</h2>
+  <h2 class="h-zh">做之前我們先問了。以下是聽到的話。</h2>
+  <div class="quotes">
+    <div class="quote"><span class="m">“</span>
+      <p class="en">A film of ours leaked from a platform once. Since then I use one paid secure platform, and I check it again before every single submission.</p>
+      <p class="zh">我們有一部片在平台上外流過。從那之後只用一個要付錢的安全平台，而且每次送件前都再確認一遍。</p>
+      <cite class="en">Sales agent</cite><cite class="zh">銷售代理</cite></div>
+    <div class="quote"><span class="m">“</span>
+      <p class="en">I spent an hour on a festival website just to find out whether they take films under 45 minutes. It was in a PDF in the footer.</p>
+      <p class="zh">我為了確認一個影展收不收 45 分鐘以下的片，翻官網翻了一小時。規定藏在頁尾的 PDF 裡。</p>
+      <cite class="en">Director</cite><cite class="zh">導演</cite></div>
+    <div class="quote"><span class="m">“</span>
+      <p class="en">What I am afraid of is a report that reads well and is quietly wrong. I would rather see two hundred you have checked than five thousand you guessed.</p>
+      <p class="zh">我怕的是那種讀起來很合理，但其實是錯的報告。我寧可你給我兩百筆查證過的，也不要五千筆用猜的。</p>
+      <cite class="en">Producer</cite><cite class="zh">製片</cite></div>
+    <div class="quote"><span class="m">“</span>
+      <p class="en">The film took three years. It was visible for about three weeks. That gap is the whole problem.</p>
+      <p class="zh">片子拍了三年，被看見大概三週。那個落差就是整個問題。</p>
+      <cite class="en">Director</cite><cite class="zh">導演</cite></div>
+  </div>
+</div></section>
+
+<!-- FAQ -->
+<section class="tint" id="faq"><div class="wrap">
+  <p class="eyebrow">Frequently asked</p>
+  <h2 class="h-en">The questions people ask in the first five minutes.</h2>
+  <h2 class="h-zh">大家前五分鐘都會問的問題。</h2>
+  <div class="faq">
+    <details open>
+      <summary><span class="en">What does it cost?</span><span class="zh">要收費嗎？</span></summary>
+      <div class="a en">Free while it is a prototype, for creators with one film. In exchange we ask for honest reactions. Later, the people paying are distributors and rights holders with a catalogue, not directors with one film.</div>
+      <div class="a zh">原型階段對一部片的創作者免費，交換條件是誠實的反應。之後付錢的會是手上有一批片的發行商和版權方，不是只有一部片的導演。</div>
+    </details>
+    <details>
+      <summary><span class="en">Will my film be used to train AI?</span><span class="zh">我的片會被拿去訓練 AI 嗎？</span></summary>
+      <div class="a en">No. Your film is used to do the job you asked for, in your own space, and nothing else. If we ever want to do anything beyond that, we will ask you in writing first.</div>
+      <div class="a zh">不會。你的片只用來做你要求的那件事，跑在你自己的空間裡。如果哪天我們想做別的用途，會先用書面問你。</div>
+    </details>
+    <details>
+      <summary><span class="en">My English is not good. Can I still use it?</span><span class="zh">我英文不好，可以用嗎？</span></summary>
+      <div class="a en">Yes. The interface and everything it produces come in Chinese and English, and subtitles also cover Japanese and Korean. You write in whichever language you think in.</div>
+      <div class="a zh">可以。介面和產出都有中英文，字幕另外支援日文和韓文。你用你習慣思考的語言寫就好。</div>
+    </details>
+    <details>
+      <summary><span class="en">My film is not finished. Too early?</span><span class="zh">我的片還沒完成，太早了嗎？</span></summary>
+      <div class="a en">Not at all. The earliest useful moment is the day you lock picture, when you start thinking about where it goes. Some of it works during post as well.</div>
+      <div class="a zh">不會。最早能用的時間點是剪定版那天，開始想片子要去哪裡的時候。有些功能在後製階段就能用。</div>
+    </details>
+    <details>
+      <summary><span class="en">Does this replace my sales agent or distributor?</span><span class="zh">這會取代我的銷售代理或發行商嗎？</span></summary>
+      <div class="a en">No, and it is not trying to. Relationships with programmers and buyers are built by people. This handles the material, the admin and the research around those relationships so your time goes into the conversations.</div>
+      <div class="a zh">不會，也沒有要這樣做。跟策展人和買家的關係是靠人建立的。這個工具處理的是那些關係周邊的素材、行政和查資料，讓你的時間花在對話上。</div>
+    </details>
+    <details>
+      <summary><span class="en">Who is behind it?</span><span class="zh">是誰在做？</span></summary>
+      <div class="a en">Giloo, a streaming platform for independent and documentary film based in Taipei, working with festivals, distributors and creators since 2019.</div>
+      <div class="a zh">Giloo，一個做獨立與紀錄影像的串流平台，在台北，從 2019 年開始跟影展、片商和創作者合作。</div>
+    </details>
+  </div>
+</div></section>
+
+<!-- SIGNUP -->
+<section class="signup" id="signup"><div class="wrap">
+  <p class="eyebrow">Get early access</p>
+  <h2 class="h-en">Tell us about your film. We will reply with what we can do for it.</h2>
+  <h2 class="h-zh">跟我們說你的片。我們會回覆現在能為它做什麼。</h2>
+  <p class="lede en" style="margin-top:16px">A real person reads every one of these. If you are at Busan this week, say so and we will find twenty minutes.</p>
+  <p class="lede zh" style="margin-top:16px">每一封都是真人看的。如果你這週在釜山，寫一句，我們找二十分鐘當面聊。</p>
+
+  <form class="form" id="f" name="creator-tools-signup" method="POST" data-netlify="true" netlify-honeypot="bot-field" action="?ok=1">
+    <input type="hidden" name="form-name" value="creator-tools-signup">
+    <p class="hide"><label>Leave blank <input name="bot-field" id="bf" tabindex="-1" autocomplete="off"></label></p>
+    <div class="field"><label for="n"><span class="en">Name</span><span class="zh">姓名</span></label><input id="n" name="name" required autocomplete="name"></div>
+    <div class="field"><label for="e"><span class="en">Email</span><span class="zh">電子郵件</span></label><input id="e" name="email" type="email" required autocomplete="email"></div>
+    <div class="field"><label for="r"><span class="en">You are</span><span class="zh">你的身分</span></label>
+      <select id="r" name="role">
+        <option value="director">Director 導演</option>
+        <option value="producer">Producer 製片</option>
+        <option value="sales">Sales agent 銷售代理</option>
+        <option value="distributor">Distributor 發行商</option>
+        <option value="festival">Festival 影展</option>
+        <option value="other">Other 其他</option>
+      </select></div>
+    <div class="field"><label for="t"><span class="en">Film title</span><span class="zh">片名</span></label><input id="t" name="film" placeholder="optional 選填"></div>
+    <div class="field full"><label for="w"><span class="en">What do you need most right now?</span><span class="zh">你現在最需要什麼？</span></label>
+      <input id="w" name="need" placeholder="e.g. English subtitles before a deadline / 例如：截止日前要英文字幕"></div>
+    <div class="form-foot">
+      <button type="submit" class="btn red"><span class="en">Send</span><span class="zh">送出</span></button>
+      <small class="en">We reply personally. No mailing list, no drip campaign.</small>
+      <small class="zh">我們會親自回信。不會把你加進電子報，也不會自動發信給你。</small>
+    </div>
+  </form>
+
+  <div class="done hide" id="done" role="status">
+    <b class="en">Got it. We will be in touch.</b>
+    <b class="zh">收到了，我們會跟你聯絡。</b>
+    <span class="en">In the meantime, the prototype is open. Click around, it costs nothing and breaks nothing.</span>
+    <span class="zh">在那之前，原型是開著的。隨便點，不會壞也不會收費。</span>
+  </div>
+</div></section>
+
+<footer><div class="wrap">
+  <span class="logo" style="font-size:14px"><i style="width:18px;height:18px"></i>Giloo Creator Tools</span>
+  <span class="en">Working name, working prototype · Busan 2026</span>
+  <span class="zh">暫定名稱，原型階段 · 釜山 2026</span>
+  <a href="https://giloo-ai-marketing.github.io/creator-tools-poc/" target="_blank" rel="noopener"><span class="en">Open the prototype</span><span class="zh">打開原型</span> →</a>
+  <a href="mailto:info@giloo.ist">info@giloo.ist</a>
+  <a href="https://giloo.ist" target="_blank" rel="noopener">giloo.ist</a>
+</div></footer>
+</div>
+
+<script>
+(function(){
+  var p=document.getElementById('p'),bs=document.querySelectorAll('.langs button');
+  function set(l){p.dataset.lang=l;document.documentElement.lang=(l==='zh'?'zh-Hant':'en');bs.forEach(function(b){b.setAttribute('aria-pressed',String(b.dataset.set===l));});try{localStorage.setItem('gct-lang',l);}catch(e){}}
+  bs.forEach(function(b){b.addEventListener('click',function(){set(b.dataset.set);});});
+  try{var s=localStorage.getItem('gct-lang');if(s==='zh'||s==='en')set(s);else if((navigator.language||'').toLowerCase().indexOf('zh')===0)set('zh');}catch(e){}
+
+  var f=document.getElementById('f'),d=document.getElementById('done');
+  function show(){f.classList.add('hide');d.classList.remove('hide');d.scrollIntoView({block:'center',behavior:'smooth'});}
+  if(/[?&]ok=1/.test(location.search))show();
+  f.addEventListener('submit',function(ev){
+    if(document.getElementById('bf').value){ev.preventDefault();return;}
+    var live=/netlify\.app$/.test(location.hostname)||/giloo\.ist$/.test(location.hostname);
+    if(live)return; // let Netlify handle the POST
+    ev.preventDefault();show();
+  });
+})();
+</script>
+</body>
+</html>
