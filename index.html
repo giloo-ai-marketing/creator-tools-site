@@ -16,7 +16,7 @@
   --ink:#16181C; --ink-2:#4B5158; --ink-3:#8A9098;
   --bg:#FFFFFF; --bg-2:#FAFAF9; --bg-3:#F3F3F1;
   --line:#E6E6E3; --line-2:#EFEFEC;
-  --sans:"Geist","Noto Sans TC",-apple-system,"PingFang TC","Helvetica Neue",sans-serif;
+  --sans:"Geist","PingFang TC","PingFang HK","PingFang SC",-apple-system,BlinkMacSystemFont,"Noto Sans TC","Helvetica Neue",sans-serif;
   --mono:"Geist Mono",ui-monospace,Menlo,monospace;
 }
 *{box-sizing:border-box}
@@ -25,6 +25,13 @@ body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--sans);font
 img{max-width:100%;display:block}
 #p[data-lang="en"] .zh,#p[data-lang="zh"] .en{display:none}
 #p[data-lang="en"] .h-zh,#p[data-lang="zh"] .h-en{display:none}
+/* 中文用蘋方，字重放輕、字距放開，接近 Keynote 的感覺 */
+#p[data-lang="zh"] h1{font-weight:500;letter-spacing:.035em}
+#p[data-lang="zh"] h2{font-weight:500;letter-spacing:.02em}
+#p[data-lang="zh"] h3,#p[data-lang="zh"] .chk b,#p[data-lang="zh"] .step b,#p[data-lang="zh"] .tri b,#p[data-lang="zh"] .faq summary,#p[data-lang="zh"] .chk-foot{font-weight:500;letter-spacing:.012em}
+#p[data-lang="zh"] .num .v{font-weight:500}
+#p[data-lang="zh"] p,#p[data-lang="zh"] .lede,#p[data-lang="zh"] .a,#p[data-lang="zh"] .quote p{letter-spacing:.012em}
+#p[data-lang="zh"] .banner .sub{letter-spacing:.02em}
 .wrap{max-width:1140px;margin:0 auto;padding-inline:clamp(20px,4vw,36px)}
 .eyebrow{margin:0;font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--red)}
 h2{margin:12px 0 0;font-size:clamp(26px,3.6vw,40px);line-height:1.22;font-weight:600;letter-spacing:-.022em;text-wrap:balance}
@@ -197,7 +204,7 @@ footer a:hover{color:var(--ink)}
   <div class="banner">
     <p class="eyebrow">Giloo Creator Tools · Busan 2026</p>
     <h1 class="h-en">Your film is finished. The hard part starts now.</h1>
-    <h1 class="h-zh">片子拍完了，難的才剛開始。</h1>
+    <h1 class="h-zh">片子拍完了，難的才剛開始</h1>
     <p class="sub en">Subtitles, a secure screener, a press kit, a release plan, social cuts. Say what you need in one sentence and get back something you can actually send.</p>
     <p class="sub zh">字幕、安全的試片頁、Press Kit、發行計畫、社群短片。用一句話說出你要什麼，拿回一份可以直接寄出去的東西。</p>
     <div class="cta">
